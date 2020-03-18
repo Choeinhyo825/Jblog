@@ -20,13 +20,40 @@
 	</select>
 
 	<select id="findPost" resultType="postvo">
-		<![CDATA[
-			select p.no, p.title, p.contents, date_format(p.reg_date,'%Y/%m/%d') as regDate , p.category_no as categoryNo 
-			from post p
-			join category c on(p.category_no = c.no)
-			where c.id = #{id}
-			order by no desc
-		]]>
+		<choose>
+			<when test="categoryNo!=0 and postNo==0">
+			<![CDATA[
+				select p.no, p.title, p.contents, date_format(p.reg_date,'%Y/%m/%d') as regDate , p.category_no as categoryNo 
+				from post p
+				join category c on(p.category_no = c.no)
+				where c.id = #{id}
+				and p.category_no = #{categoryNo}
+				order by no desc
+			]]>
+			</when>
+			<when test="categoryNo!=0 and postNo!=0">
+			<![CDATA[
+				select p.no, p.title, p.contents, date_format(p.reg_date,'%Y/%m/%d') regDate, 
+				p.category_no as categoryNo , c.name
+				from post p
+				right join category c on(p.category_no = c.no)
+				where c.id = #{id}
+				and p.category_no = #{categoryNo}
+				order by 
+				p.no != #{postNo}
+				asc;
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+				select p.no, p.title, p.contents, date_format(p.reg_date,'%Y/%m/%d') as regDate , p.category_no as categoryNo 
+				from post p
+				join category c on(p.category_no = c.no)
+				where c.id = #{id}
+				order by no desc
+			]]>
+			</otherwise>
+		</choose>
 	</select>
 	
 	<select id="findBasic" resultType="blogvo">

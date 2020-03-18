@@ -29,17 +29,21 @@ public class BlogService {
 
 	// 블로그 메인 화면
 	public ModelMap findAll(String id, Long categoryNo, Long postNo) {
-		ModelMap map = new ModelMap();
-
+		ModelMap modelmap = new ModelMap();
+		Map map = new HashMap<String, Object>();
+		map.put("id",id);
+		map.put("categoryNo",categoryNo);
+		map.put("postNo",postNo);
+		
 		BlogVo blogVo = blogRepository.findBlog(id);
 		List<CategoryVo> categoryList = blogRepository.findCategory(id);
-		List<PostVo> postList = blogRepository.findPost(id);
+		List<PostVo> postList = blogRepository.findPost(map);
 
-		map.put("blogVo", blogVo);
-		map.put("categoryList", categoryList);
-		map.put("postList", postList);
+		modelmap.put("blogVo", blogVo);
+		modelmap.put("categoryList", categoryList);
+		modelmap.put("postList", postList);
 
-		return map;
+		return modelmap;
 	}
 
 	public BlogVo findBasic(String id) {
