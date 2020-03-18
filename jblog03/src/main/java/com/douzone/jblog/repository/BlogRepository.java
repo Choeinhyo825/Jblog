@@ -25,8 +25,8 @@ public class BlogRepository {
 		return sqlSession.selectList("blog.findCategory", id);
 	}
 
-	public List<PostVo> findPost(String id) {
-		return sqlSession.selectList("blog.findPost", id);
+	public List<PostVo> findPost(Map map) {
+		return sqlSession.selectList("blog.findPost", map);
 	}
 
 	public BlogVo findBasic(String id) {

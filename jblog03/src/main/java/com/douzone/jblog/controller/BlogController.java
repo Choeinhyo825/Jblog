@@ -41,7 +41,7 @@ public class BlogController {
 			postNo = pathNo2.get();
 			categoryNo = pathNo1.get();
 		} else if (pathNo1.isPresent()) {
-			postNo = pathNo1.get();
+			categoryNo = pathNo1.get();
 		}
 		model.putAll(blogService.findAll(id, categoryNo, postNo));
 		return "blog/blog-main";

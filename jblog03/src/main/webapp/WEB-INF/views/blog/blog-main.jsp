@@ -32,19 +32,26 @@
 					<li><a href="${pageContext.request.contextPath }/user/logout">로그아웃</a></li>
 					<li><a href="${pageContext.request.contextPath }/${authUser.id }/admin/basic">블로그 관리</a></li>
 				</c:if>
-			</ul> 
+			</ul>
 		</div>
 		<div id="wrapper">
 			<div id="content">
-				<div class="blog-content">
+				<div class="blog-content" style="height: 300px;">
 					<c:forEach items="${postList }" begin="0" end="0" var="post">
 						<h4>${post.title }</h4>
 						<p>${fn:replace(post.contents, newLine, "<br>")}<p>
 					</c:forEach>
 				</div>
 				<ul class="blog-list">
-					<c:forEach items="${postList }" var="post">
-						<li><a href="${pageContext.request.contextPath }/${blogVo.id }/${post.categoryNo}/${post.no}">${post.title }</a> <span>${post.regDate }</span>	</li>
+					<c:forEach items="${postList }" var="post" varStatus="status">
+						<c:choose>
+							<c:when test="${status.index eq 0 }">
+								<li style="color: black; font-weight: bold;"><a>현재글 - ${post.title }</a> <span>${post.regDate }</span>	</li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="${pageContext.request.contextPath }/${blogVo.id }/${post.categoryNo}/${post.no}">${post.title }</a> <span>${post.regDate }</span></li>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 				</ul>
 			</div>
