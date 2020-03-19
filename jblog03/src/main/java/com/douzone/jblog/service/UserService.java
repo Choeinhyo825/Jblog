@@ -20,7 +20,7 @@ public class UserService {
 		BlogVo blogVo = new BlogVo();
 		blogVo.setId(userVo.getId());
 		blogVo.setTitle("반갑습니다. "+userVo.getName()+"님의 블로그 입니다.");
-		blogVo.setLogo("/images/logo.jpg");
+		blogVo.setLogo("/assets/images/logo.jpg");
 		int count2 = userRepository.insertBlog(blogVo);
 		
 		CategoryVo categortVo = new CategoryVo();
@@ -38,14 +38,5 @@ public class UserService {
 	public UserVo getUser(UserVo vo) {
 		return userRepository.find(vo);
 	}
-
-//	public UserVo getUser(Long no) {
-//		return userRepository.find(no);
-//	}
-//	
-//	public Boolean updateUser(UserVo vo) {
-//		int count = userRepository.updateUser(vo);
-//		return count == 1;
-//	}
 
 }
