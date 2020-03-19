@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JBlog</title>
 <Link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 </head>
 <body>
 	<div id="container">
@@ -20,7 +21,7 @@
 			      		</tr>
 			      		<tr>
 			      			<td class="t">로고이미지</td>
-			      			<td><img src="${pageContext.request.contextPath}${BlogVo.logo }"></td>      			
+			      			<td><img src="${pageContext.request.contextPath}${BlogVo.logo }" id="image_section"></td>      			
 			      		</tr>      		
 			      		<tr>
 			      			<td class="t">&nbsp;</td>
@@ -40,5 +41,23 @@
 			</p>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+	function readURL(input) {
+		 if (input.files && input.files[0]) {
+		  var reader = new FileReader();
+		  
+		  reader.onload = function (e) {
+		   $('#image_section').attr('src', e.target.result);  
+		  }
+		  
+		  reader.readAsDataURL(input.files[0]);
+		  }
+		}
+		  
+		$("input[name=logo-file]").change(function(){
+		   readURL(this);
+		});
+	</script>
 </body>
 </html>

@@ -33,7 +33,7 @@
 	</mvc:interceptors>
 
 	<!-- mvc resources -->
-	<mvc:resources location="file:/jblog-uploads/" mapping="/assets/images/**" />
+	<mvc:resources location="file:/jblog-uploads/" mapping="/assets/upimages/**" />
 
 	<!-- ViewResolver -->
 	<bean id="viewResolver"
