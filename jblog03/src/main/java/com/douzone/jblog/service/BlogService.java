@@ -25,7 +25,7 @@ public class BlogService {
 	BlogRepository blogRepository;
 
 	private static final String SAVE_PATH = "/jblog-uploads";
-	private static final String URL = "/assets/images";
+	private static final String URL = "/assets/upimages";
 
 	// 블로그 메인 화면
 	public ModelMap findAll(String id, Long categoryNo, Long postNo) {

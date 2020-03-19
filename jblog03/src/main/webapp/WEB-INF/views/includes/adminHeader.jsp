@@ -2,7 +2,7 @@
 <!doctype html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<div id="header">
-			<h1>${authUser.joinDate }</h1>
+			<h1>블로그 관리</h1>
 			<ul>
 				<li><a href="${pageContext.request.contextPath }/user/logout">로그아웃</a></li>
 				<li><a href="${pageContext.request.contextPath }/${authUser.id }">블로그 메인</a></li>
