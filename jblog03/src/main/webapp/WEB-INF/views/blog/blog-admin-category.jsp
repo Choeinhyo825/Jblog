@@ -11,21 +11,7 @@
 </head>
 <body>
 	<div id="container">
-		<div id="header">
-			<h1>Spring 이야기</h1>
-			<ul>
-				<li><a href="">로그인</a></li>
-				<li><a href="">로그아웃</a></li>
-				<li><a href="">블로그 관리</a></li>
-			</ul>
-		</div>
-		<div id="wrapper">
-			<div id="content" class="full-screen">
-				<ul class="admin-menu">
-					<li><a href="${pageContext.request.contextPath }/${authUser.id }/admin/basic">기본설정</a></li>
-					<li class="selected">카테고리</li>
-					<li><a href="${pageContext.request.contextPath }/${authUser.id }/admin/write">글작성</a></li>
-				</ul>
+				<c:import url="/WEB-INF/views/includes/adminHeader.jsp"/>
 		      	<table class="admin-cat">
 		      		<tr>
 		      			<th>번호</th>
@@ -41,7 +27,13 @@
 							<td>${cl.name }</td>
 							<td>${cl.count }</td>
 							<td>${cl.desc }</td>
-							<td><a href="${pageContext.request.contextPath }/${authUser.id }/admin/category/${cl.no}"><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></a></td>
+							<td>
+								<a href="${pageContext.request.contextPath }/${authUser.id }/admin/category/${cl.no}">
+									<c:if test='${cl.count eq 0 && cl.name ne "기타" }'>
+										<img src="${pageContext.request.contextPath}/assets/images/delete.jpg">
+									</c:if>
+								</a>
+							</td>
 						</tr>  
 		      		</c:forEach>
 				</table>

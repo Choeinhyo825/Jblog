@@ -26,10 +26,11 @@
 	<!-- 로그인 -->
 	<select id="findUser" parameterType="uservo" resultType="uservo">
 		<![CDATA[
-		select id, name
-		from user 
-		where id = #{id }
-		and password = #{password }
+		select u.id, u.name, b.title as joinDate
+		from user u
+		join blog b using(id)
+		where u.id = #{id }
+		and u.password = #{password }
 		]]>
 	</select>
 </mapper>

@@ -55,31 +55,4 @@ public class UserController {
 	public String mypage() {
 		return "blog/blog-main";
 	}
-	
-	
-//
-//	/*
-//	 * 회원정보 수정 폼
-//	 */
-//	@RequestMapping(value = "/update", method = RequestMethod.GET)
-//	public String update(Model model, @AuthUser UserVo authUser) {
-////		UserVo vo = userService.getUser(authUser.getNo());
-////		model.addAttribute("userVo", vo);
-//		return "/user/update";
-//	}
-//
-//	/*
-//	 * 회원정보 수정
-//	 */
-//	@RequestMapping(value = "/update", method = RequestMethod.POST)
-//	public String update(UserVo vo, @AuthUser UserVo authUser) {
-////		vo.setNo(authUser.getNo());
-//		userService.updateUser(vo);
-//		authUser.setName(vo.getName());
-//		return "/user/updatesuccess";
-//	}
-//	@ExceptionHandler(Exception.class)
-//	public String handleException() {
-//		return "error/exception";
-//	}
 }

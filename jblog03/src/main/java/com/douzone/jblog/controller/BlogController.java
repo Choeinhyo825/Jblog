@@ -2,7 +2,6 @@ package com.douzone.jblog.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.douzone.jblog.service.BlogService;
 import com.douzone.jblog.vo.BlogVo;
 import com.douzone.jblog.vo.CategoryVo;
+import com.douzone.jblog.vo.UserVo;
+import com.douzone.security.AuthUser;
 
 @Controller
 @RequestMapping("/{id:(?!assets).*}")
@@ -29,10 +30,8 @@ public class BlogController {
 
 	// 블로그 메인 화면
 	@RequestMapping({ "", "/{pathNo1}", "/{pathNo1}/{pathNo2}" })
-	public String index(@PathVariable String id, 
-			@PathVariable Optional<Long> pathNo1,
-			@PathVariable Optional<Long> pathNo2, 
-			ModelMap model) {
+	public String index(@PathVariable String id, @PathVariable Optional<Long> pathNo1,
+			@PathVariable Optional<Long> pathNo2, ModelMap model) {
 
 		Long categoryNo = 0L;
 		Long postNo = 0L;
@@ -49,53 +48,70 @@ public class BlogController {
 
 	// 블로그 기본 관리
 	@RequestMapping(value = "/admin/basic", method = RequestMethod.GET)
-	public String basic(@PathVariable String id, Model model) {
+	public String basic(@PathVariable String id, Model model, @AuthUser UserVo authUser) {
+		if (authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/main";
+		}
 		BlogVo vo = blogService.findBasic(id);
-		model.addAttribute("BlogVo",vo);
+		model.addAttribute("BlogVo", vo);
 		return "blog/blog-admin-basic";
 	}
 
 	// 블로그 기본 수정
 	@RequestMapping(value = "/admin/basic", method = RequestMethod.POST)
-	public String basic(@PathVariable String id, String title,  @RequestParam(value = "logo-file") MultipartFile multipartFile) {
-		blogService.updateBasic(id,title,multipartFile);
+	public String basic(@PathVariable String id, String title,
+			@RequestParam(value = "logo-file") MultipartFile multipartFile, @AuthUser UserVo authUser) {
+		if (authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/main";
+		}
+		blogService.updateBasic(id, title, multipartFile);
 		return "redirect:basic";
 	}
 
 	// 블로그 카테고리 관리
 	@RequestMapping(value = "/admin/category", method = RequestMethod.GET)
-	public String category(@PathVariable String id, Model model) {
-		System.out.println("id!!!!!!!" + id);
+	public String category(@PathVariable String id, Model model, @AuthUser UserVo authUser) {
+		if (authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/main";
+		}
 		List<HashMap<String, Object>> categoryList = blogService.findCategory(id);
-		model.addAttribute("categoryList",categoryList);
+		model.addAttribute("categoryList", categoryList);
 		return "blog/blog-admin-category";
 	}
 
 	// 블로그 카테고리 수정
 	@RequestMapping(value = "/admin/category", method = RequestMethod.POST)
-	public String category(@PathVariable String id, String name, String desc) {
+	public String category(@PathVariable String id, String name, String desc, @AuthUser UserVo authUser) {
+		if (authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/main";
+		}
 		CategoryVo vo = new CategoryVo();
 		vo.setId(id);
 		vo.setName(name);
 		vo.setDesc(desc);
 		blogService.insertCategory(vo);
-		return "redirect:category";
+		return "redirect:/" + id + "/admin/category";
 	}
-	
+
 	// 블로그 카테고리 삭제
 	@RequestMapping(value = "/admin/category/{no}", method = RequestMethod.GET)
-	public String category(@PathVariable String id, @PathVariable Long no) {
+	public String category(@PathVariable String id, @PathVariable Long no, @AuthUser UserVo authUser) {
+		if (authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/main";
+		}
 		CategoryVo vo = new CategoryVo();
 		vo.setId(id);
 		vo.setNo(no);
 		blogService.deleteCategory(vo);
-		System.out.println("!!!!!!!!!!!!!!!!!!!!1");
-		return "redirect:category";
+		return "redirect:/" + id + "/admin/category";
 	}
 
 	// 블로그 글 작성 폼
 	@RequestMapping(value = "/admin/write", method = RequestMethod.GET)
-	public String categoryOption(@PathVariable String id, Model model) {
+	public String categoryOption(@PathVariable String id, Model model, @AuthUser UserVo authUser) {
+		if (authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/main";
+		}
 		List<CategoryVo> category = blogService.categoryOption(id);
 		model.addAttribute("category", category);
 		return "blog/blog-admin-write";
@@ -103,8 +119,11 @@ public class BlogController {
 
 	// 블로그 글 등록
 	@RequestMapping(value = "/admin/write", method = RequestMethod.POST)
-	public String writePost(@PathVariable String id, String title, String category, String content) {
-		blogService.writePost(id,title,category,content);
+	public String writePost(@PathVariable String id, String title, String category, String content, @AuthUser UserVo authUser) {
+		if (authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/main";
+		}
+		blogService.writePost(id, title, category, content);
 		return "redirect:write";
 	}
 
