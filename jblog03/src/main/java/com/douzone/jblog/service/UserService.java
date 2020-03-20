@@ -20,7 +20,7 @@ public class UserService {
 		BlogVo blogVo = new BlogVo();
 		blogVo.setId(userVo.getId());
 		blogVo.setTitle("반갑습니다. "+userVo.getName()+"님의 블로그 입니다.");
-		blogVo.setLogo("/assets/upimages/logo.jpg");
+		blogVo.setLogo("/assets/images/spring-logo.jpg");
 		int count2 = userRepository.insertBlog(blogVo);
 		
 		CategoryVo categortVo = new CategoryVo();
