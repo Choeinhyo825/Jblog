@@ -38,10 +38,12 @@ public class BlogService {
 		BlogVo blogVo = blogRepository.findBlog(id);
 		List<CategoryVo> categoryList = blogRepository.findCategory(id);
 		List<PostVo> postList = blogRepository.findPost(map);
+		PostVo postVo = blogRepository.getPost(map);
 
 		modelmap.put("blogVo", blogVo);
 		modelmap.put("categoryList", categoryList);
 		modelmap.put("postList", postList);
+		modelmap.put("postVo", postVo);
 
 		return modelmap;
 	}

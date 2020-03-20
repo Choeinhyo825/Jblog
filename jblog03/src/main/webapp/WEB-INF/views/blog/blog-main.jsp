@@ -37,19 +37,18 @@
 		<div id="wrapper">
 			<div id="content">
 				<div class="blog-content" style="height: 300px;">
-					<c:forEach items="${postList }" begin="0" end="0" var="post">
-						<h4>${post.title }</h4>
-						<p>${fn:replace(post.contents, newLine, "<br>")}<p>
-					</c:forEach>
+					<h4>${postVo.title }</h4>
+					<p>${fn:replace(postVo.contents, newLine, "<br>")}<p>
 				</div>
 				<ul class="blog-list">
 					<c:forEach items="${postList }" var="post" varStatus="status">
 						<c:choose>
-							<c:when test="${status.index eq 0 }">
-								<li style="color: black; font-weight: bold;"><a>현재글 - ${post.title }</a> <span>${post.regDate }</span>	</li>
+						
+							<c:when test="${post.no eq postVo.no }">
+								<li style="color: black; font-weight: bold;"><a>${post.title } - 현재글</a> <span>${post.regDate }</span>	</li>
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.request.contextPath }/${blogVo.id }/${post.categoryNo}/${post.no}">${post.title }</a> <span>${post.regDate }</span></li>
+								<li><a href="${pageContext.request.contextPath }/${blogVo.id }/${post.categoryNo}/${post.no}">${post.title }</a><span>${post.regDate }</span></li>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>

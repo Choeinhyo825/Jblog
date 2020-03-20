@@ -28,10 +28,10 @@
 				join category c on(p.category_no = c.no)
 				where c.id = #{id}
 				and p.category_no = #{categoryNo}
-				order by no desc
+				order by p.no desc
 			]]>
 			</when>
-			<when test="categoryNo!=0 and postNo!=0">
+ 			<when test="categoryNo!=0 and postNo!=0">
 			<![CDATA[
 				select p.no, p.title, p.contents, date_format(p.reg_date,'%Y/%m/%d') regDate, 
 				p.category_no as categoryNo , c.name
@@ -39,9 +39,7 @@
 				right join category c on(p.category_no = c.no)
 				where c.id = #{id}
 				and p.category_no = #{categoryNo}
-				order by 
-				p.no != #{postNo}
-				asc;
+				order by p.no desc
 			]]>
 			</when>
 			<otherwise>
@@ -50,9 +48,46 @@
 				from post p
 				join category c on(p.category_no = c.no)
 				where c.id = #{id}
-				order by no desc
+				order by p.no desc
 			]]>
 			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="getPost" resultType="postvo" >
+		<choose>
+			<when test="categoryNo!=0 and postNo==0">
+			<![CDATA[
+				select p.no, p.title, p.contents
+				from post p
+				join category c on(p.category_no = c.no)
+				where c.id = #{id}
+				and c.no = #{categoryNo}
+				order by p.no desc
+				limit 1
+			]]>
+			</when>
+			<when test="categoryNo!=0 and postNo!=0">
+			<![CDATA[
+				select p.no, p.title, p.contents
+				from post p
+				join category c on(p.category_no = c.no)
+				where c.id = #{id}
+				and p.no = #{postNo}
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+				select p.no, p.title, p.contents
+				from post p
+				join category c on(p.category_no = c.no)
+				where c.id = #{id}
+				order by p.no desc
+				limit 1		
+			]]>
+			</otherwise>
+			
+			
 		</choose>
 	</select>
 	
