@@ -28,6 +28,10 @@ public class BlogRepository {
 	public List<PostVo> findPost(Map map) {
 		return sqlSession.selectList("blog.findPost", map);
 	}
+	
+	public PostVo getPost(Map map) {
+		return sqlSession.selectOne("blog.getPost", map);
+	}
 
 	public BlogVo findBasic(String id) {
 		return sqlSession.selectOne("blog.findBasic", id);
@@ -59,7 +63,5 @@ public class BlogRepository {
 		map.put("category", category);
 		return sqlSession.insert("blog.writePost", map);
 	}
-
-
 
 }
