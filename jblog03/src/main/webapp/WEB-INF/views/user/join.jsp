@@ -22,12 +22,8 @@
 			action="${pageContext.request.contextPath }/user/join">
 			<label class="block-label" for="name">이름</label>
 			<form:input path="name" />
-			<p style="font-weight:bold; color:#f00; text-align:left; padding-left:0; padding-top: 0">
-				<spring:hasBindErrors name="userVo">
-					<c:if test='${errors.hasFieldErrors("name") }'>
-						<spring:message code='${errors.getFieldError("name").codes[0] }'/>
-					</c:if>
-				</spring:hasBindErrors>
+			<p style="color: red;font-weight: bold; text-align: left; padding-left: 0;padding-top: 0">
+				<form:errors path="name"/>
 			</p>
 			
 			<label class="block-label" for="blog-id">아이디</label>
@@ -38,19 +34,16 @@
 				<form:errors path="id"/>
 			</p>
 
-
 			<label class="block-label" for="password">패스워드</label>
 			<form:input path="password"/>
 			<p style="color: red;font-weight: bold; text-align: left; padding-left: 0;padding-top: 0">
 				<form:errors path="password"/>
 			</p>
-
 			<fieldset>
 				<legend>약관동의</legend>
 				<input id="agree-prov" type="checkbox" name="agreeProv" value="y">
 				<label class="l-float">서비스 약관에 동의합니다.</label>
 			</fieldset>
-
 			<input type="submit" value="가입하기">
 
 		</form:form>
