@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<!-- 총 게시글 수 -->
+	<select id="searchBoardListCount" parameterType="string" resultType="Long">
+		<choose>
+			<when test='"".equals(_parameter)'>
+			<![CDATA[
+			SELECT COUNT(*) 
+			FROM board
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			SELECT COUNT(*) 
+			FROM board
+			 WHERE TITLE LIKE '%${_parameter }%'
+			]]>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 페이징 -->
+	<select id="searchBoardRecord" parameterType="pageinfo"  resultType="boardvo">
+		<choose>
+			<when test="keyword == ''">
+			<![CDATA[
+			SELECT tb.rnum , tb.no, tb.user_no as userNo, tb.title, tb.hit, date_format(tb.reg_date, '%Y-%m-%d %H:%i') as regDate, tb.group_no, tb.order_no, tb.depth, tb.name, tb.status 
+			FROM (
+				 	SELECT @ROWNUM:=@ROWNUM+1 as rnum, bb.no, bb.user_no, bb.title, bb.hit, date_format(bb.reg_date, '%Y-%m-%d %H:%i') as reg_date, bb.group_no, bb.order_no, bb.depth, bb.name, bb.status 
+					FROM ( 	
+							SELECT b.no, b.user_no, b.title, b.hit, date_format(b.reg_date, '%Y-%m-%d %H:%i') as reg_date, b.group_no, b.order_no, b.depth, u.name, b.status 
+							FROM board b ,user u, (SELECT @ROWNUM:=0 ) tmp 
+							WHERE b.user_no = u.no 
+							ORDER BY b.group_no desc, b.order_no ASC 
+						  ) bb 
+				 ) tb 
+			WHERE rnum BETWEEN #{startPage} AND #{endpage}
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			SELECT tb.rnum , tb.no, tb.user_no as userNo, tb.title, tb.hit, date_format(tb.reg_date,'%Y-%m-%d %H:%i') as regDate, tb.group_no, tb.order_no, tb.depth, tb.name, tb.status 
+			FROM (
+					SELECT @ROWNUM:=@ROWNUM+1 as rnum, bb.no, bb.user_no, bb.title, bb.hit, date_format(bb.reg_date,'%Y-%m-%d %H:%i') as reg_date, bb.group_no, bb.order_no, bb.depth, bb.name, bb.status 
+					FROM ( 	
+							SELECT b.no, b.user_no, b.title, b.hit, date_format(b.reg_date,'%Y-%m-%d %H:%i') as reg_date, b.group_no, b.order_no, b.depth, u.name, b.status 
+							FROM board b ,user u, (SELECT @ROWNUM:=0) TMP 
+							WHERE b.user_no = u.no AND b.title like '%${keyword }%'
+							ORDER BY b.group_no desc, b.order_no asc
+						  ) bb
+				  ) tb 
+			WHERE rnum BETWEEN #{startPage } AND #{endpage }
+			ORDER BY tb.group_no desc, tb.order_no;
+			]]>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 답글시 업데이트 -->
+	<update id="updateOrederNo" parameterType="boardvo">
+		<![CDATA[
+		update board set order_no = order_no +1 
+		where group_no = #{gno} and order_no >= #{ono}
+		]]>
+	</update>
+	
+	<!-- 글 작성 -->
+	<insert id="insert" parameterType="boardvo">
+		<choose>
+			<when test="gno == null">
+				<![CDATA[
+				insert into board 
+				values(null, #{userNo }, #{title }, #{contents }, 0, now(), ifnull((select max(group_no)+1 from board b),1),1,0,'y')
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				insert into board 
+				values(null, #{userNo }, #{title }, #{contents }, 0, now(), #{gno }, #{ono }, #{depth }, 'y')				
+				]]>
+			</otherwise>
+		</choose>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<!-- 글 상세보기 -->
+	<select id="findByNo" parameterType="long" resultType="boardvo">
+		<![CDATA[
+		  select no, title, contents, user_no as userNo, group_no as gno, order_no as ono, depth, status 
+		  from board where no = #{no }	
+		]]>		
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateHit" parameterType="long">
+		<![CDATA[
+		update board 
+		set hit = (select * from (select b.hit+1 from board b where b.no=#{no })as a) 
+		where no = #{no } and status like 'y'
+		]]>	
+	</update>
+	
+	<!-- 하위글 체크 -->
+	<select id="searchGroup" parameterType="Long" resultType="Long">
+		<![CDATA[
+		select count(*) 
+		from board 
+		where group_no = (select group_no
+							from board
+							where no = #{no })
+		]]>	
+	</select>
+	
+	<!-- 글 삭제 -->
+	<delete id="deletePost" parameterType="map" > 
+		<![CDATA[
+		delete
+		from board 
+		where no = #{no }
+		and user_no = #{userNo }
+		]]>	
+	</delete>
+	
+	<!-- 글 삭제(업데이트) -->
+	<update id="updatePost" parameterType="map">
+		<![CDATA[
+		update board 
+		set status = 'n', title = '' 
+		where no = #{no }
+		and user_no = #{userNo }
+		]]>	
+	</update>
+	
+	<update id="update" parameterType="boardVo">
+		<![CDATA[
+		update board 
+		set title=#{title }, contents=#{contents }
+		where no=#{no }
+		and user_no=#{userNo }	
+		]]>	
+	</update>
+
+</mapper>
