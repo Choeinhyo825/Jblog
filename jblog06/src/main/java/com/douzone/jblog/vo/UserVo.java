@@ -1,7 +1,8 @@
 package com.douzone.jblog.vo;
 
+import javax.validation.constraints.NotEmpty;
+
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class UserVo {
 	@NotEmpty
@@ -15,7 +16,7 @@ public class UserVo {
 	private String password;
 
 	private String joinDate;
-	
+
 	private String role;
 
 	public String getRole() {
