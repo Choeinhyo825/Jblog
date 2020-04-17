@@ -6,6 +6,14 @@ public class CategoryVo {
 	private String desc;
 	private String regDate;
 	private String id;
+	
+	public CategoryVo() {
+	}
+
+	public CategoryVo(Long no, String id) {
+		this.no = no;
+		this.id = id;
+	}
 
 	public Long getNo() {
 		return no;
@@ -14,6 +22,7 @@ public class CategoryVo {
 	public void setNo(Long no) {
 		this.no = no;
 	}
+	
 
 	public String getName() {
 		return name;

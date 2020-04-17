@@ -123,5 +123,24 @@ div#extra .blog-logo img	{ width:150px }
 div#footer		{ background:#F0F0F0; color:#666 }
 div#footer p	{ text-align:center; margin:0; padding:8px 10px }
 
+.delete-category{ cursor: pointer;}
 
+#dialog-delete-form.delete-form	{ height:200px }
+#dialog-delete-form.delete-form form {
+	width:200px;
+	padding:10px;
+	border:1px solid #666;
+	border-radius: 5px;
+	margin:10px auto;
+}
+
+#dialog-delete-form.delete-form a	{ display:block; margin:20px auto; width:110px }
+#dialog-delete-form.delete-form input[type="password"] {
+	margin-top:5px;
+	width:180px;
+}
+#dialog-delete-form.delete-form input[type="submit"] {
+	width:0px;
+}		
+#dialog-delete-form p.validateTips.error {color: red}
 
