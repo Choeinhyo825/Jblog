@@ -1,6 +1,5 @@
 package com.douzone.jblog.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,12 +69,14 @@ public class BlogController {
 
 	// 블로그 카테고리 관리
 	@RequestMapping(value = "/admin/category", method = RequestMethod.GET)
-	public String category(@PathVariable String id, Model model, @AuthUser UserVo authUser) {
+	public String category(@PathVariable String id, @AuthUser UserVo authUser) {
+		
 		if (authUser == null || !id.equals(authUser.getId())) {
 			return "redirect:/main";
 		}
-		List<HashMap<String, Object>> categoryList = blogService.findCategory(id);
-		model.addAttribute("categoryList", categoryList);
+		
+//		List<HashMap<String, Object>> categoryList = blogService.findCategory(id);
+//		model.addAttribute("categoryList", categoryList);
 		return "blog/blog-admin-category";
 	}
 

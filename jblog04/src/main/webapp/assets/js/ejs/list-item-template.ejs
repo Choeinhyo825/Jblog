@@ -1,0 +1,26 @@
+<%
+	var index = data.length;
+	for(var i = 0; i == 0; i++) {
+		var vo = data[i]; 
+%>
+<tr class="tr">
+	<td><%=index%></td>
+	<td><%=vo.name%></td>
+	<td><%=vo.count%></td>
+	<td><%=vo.desc%></td>
+	<td>
+	<%
+		if(vo.count == 0 && vo.name != "기타"){
+	%>
+		<a class="delete-category" id="<%=vo.no%>">
+			<img src="<%=data.contextPath%>/assets/images/delete.jpg">
+		</a>
+	<%
+		}
+	%>
+	</td>
+</tr>
+		
+<%
+	}
+%> 
